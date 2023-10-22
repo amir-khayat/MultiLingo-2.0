@@ -85,4 +85,12 @@ def delete_flashcard(flashcard_id):
 #         content_type=response.headers['content-type'],
 #     )
 
+# app route URL get new word from API localhost:5000/flashcards/new_word/API
+# run url_API() in python
+# if word is not in database, add it to database else run the function again
+# if picture is not there, send empty string
+# check if the info is in the language you want/pronuctiation style
+# Bonus: Add audio to the word
+# When everything is done, send the word to the front end
+
 
