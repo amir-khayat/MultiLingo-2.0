@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { OPENAI_API_KEY } from '../ApiKey.js';
 
 const Flashcard = (props) => {
   const { sessionId } = props;
@@ -11,6 +12,7 @@ const Flashcard = (props) => {
   const [loaded, setLoaded] = useState(false);
   const [apiloaded, setApiLoaded] = useState(false);
   const [englishWord, setEnglishWord] = useState('');
+
 
   useEffect(() => {
     fetch(`http://127.0.0.1:5000/languages/${languageId}`)
@@ -53,7 +55,7 @@ const Flashcard = (props) => {
     console.log("prompt", prompt);
 
 
-    const apiKey = "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";
+    const apiKey = OPENAI_API_KEY;
 
     fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
