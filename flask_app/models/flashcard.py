@@ -27,6 +27,15 @@ class Flashcard(BaseModel):
         return flashcards
     
     @classmethod
+    def get_all_words(cls, data):
+        query = "SELECT word FROM flashcards WHERE user_id = %(user_id)s AND language_id = %(language_id)s;"
+        results = connectToMySQL('MultiLingo').query_db(query, data)
+        words = [result['word'] for result in results]
+        print("WORDSS", words)
+        return words
+    
+    
+    @classmethod
     def get_flashcard_by_id(cls, data):
         query = "SELECT * FROM flashcards WHERE id = %(id)s;"
         results = connectToMySQL('MultiLingo').query_db(query, data)

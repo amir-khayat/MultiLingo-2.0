@@ -62,6 +62,18 @@ def delete_flashcard(flashcard_id):
     Flashcard.delete_flashcard(data)
     return jsonify({'success': True}), 200
 
+@app.route('/flashcards/user/<int:user_id>/language/<int:language_id>', methods=['GET'])
+def language_word_by_user(user_id, language_id):
+    data = {
+        'user_id': user_id,
+        'language_id': language_id
+    }
+    print("DATA", data)
+    flashcards_word = Flashcard.get_all_words(data)
+    print("FLASHCARDS WORD", flashcards_word)
+    return jsonify(flashcards_word), 200
+
+
 # @app.route('/api/narakeet/<path:path>', methods=['GET', 'POST'])
 # def proxy_narakeet(path):
 #     narakeet_url = f'https://api.narakeet.com/{path}'

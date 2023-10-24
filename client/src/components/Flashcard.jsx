@@ -12,6 +12,7 @@ const Flashcard = (props) => {
   const [loaded, setLoaded] = useState(false);
   const [apiloaded, setApiLoaded] = useState(false);
   const [englishWord, setEnglishWord] = useState('');
+  const [wordsfromdb, setWordsfromdb] = useState([]);
 
 
   useEffect(() => {
@@ -37,19 +38,34 @@ const Flashcard = (props) => {
       });
   }, [sessionId]);
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:5000//flashcards/user/${sessionId}/language/${languageId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setWordsfromdb(data);
+        // console.log("wordsfromdb", wordsfromdb); 
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [sessionId, languageId]);
+
+
+
+
   const handleNextWord = () => {
-    const prompt = `Generate a WORD with ${languages.intensity} intensity level in the ${languages.language} language. Provide its TRANSLATION in ${userData.user_language}, DEFINITION in ${userData.user_language}, and provide a plain text PRONUNCIATION of the given ${languages.language} WORD, written in ${userData.user_language} text. Give me the answer in JSON format with its keys and values in the following format:
+    setApiLoaded(false);
+
+    const prompt = `Generate a WORD with ${languages.intensity} intensity level in the ${languages.language} language. Provide its TRANSLATION in ${userData.user_language}, DEFINITION in ${userData.user_language}, and provide a plain text PRONUNCIATION of the given ${languages.language} WORD, written in ${userData.user_language} text. Make sure the word is NOT one of the following {${wordsfromdb}}. Give me the answer in JSON format with its keys and values in the following format:
       {
         "word": "",
-        "translation": "",
-        "definition": "",
+        "translation": "", // in ${userData.user_language} text
+        "definition": "", // in ${userData.user_language} text
         "image": "", // leave this blank
         "audio": "", // leave this blank
-        "pronunciation": ""
+        "pronunciation": "" // pronounce the ${languages.language} word in ${userData.user_language} text using a simplified format (e.g. "ah-oh-ee" for "aoi")
         translated_word_in_english: ""
       }
-      NOTE: MAKE SURE THE PRONUNCIATION IS NOT OF THE ${userData.user_language} TRANSLATION BUT OF THE ${languages.language} GIVEN WORD. ALSO, MAKE SURE TO FOLLOW EXACTLY WHAT I SAID.
-      Japanese to Arabic EXAMPLE: {word: '耐性', translation: 'المرونة', definition: 'القدرة على التعامل مع الصعاب والتحمل والتعافي منها', image: '', pronunciation: 'رِزِلْيَنْسْ', translated_word_in_english: "resilience"}
       `;
 
     console.log("prompt", prompt);
@@ -91,6 +107,7 @@ const Flashcard = (props) => {
         const newEnglishWord = messageContent.translated_word_in_english;
 
         setFlashcardInfo(newFlashcardInfo);
+        setWordsfromdb(prevWords => prevWords.concat(newFlashcardInfo.word));
         setEnglishWord(newEnglishWord);
         handleImage(newEnglishWord);
         setApiLoaded(true);
@@ -116,8 +133,9 @@ const Flashcard = (props) => {
         console.log("unsplashImageData", data);
         setFlashcardInfo(prevData => ({
           ...prevData,
-          image: data.results[0].urls.full
+          image: data.results[0]?.urls?.full || ''
         }));
+        console.log("image", flashcardInfo.image);
       })
       .catch(error => {
         console.log("unsplashImageError", error);
@@ -147,16 +165,16 @@ const Flashcard = (props) => {
   //       console.error("Audio Error:", error);
   //     });
   // };
-
-
-
-
+  
+  
   useEffect(() => {
     // Generate flashcard information using GPT-3 API
     if (loaded && Object.keys(languages).length > 0 && Object.keys(userData).length > 0) {
       handleNextWord();
     }
   }, [loaded]);
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -233,7 +251,35 @@ const Flashcard = (props) => {
               <p>Definition: {flashcardInfo.definition}</p>
             </div>
             <img src={flashcardInfo.image} className="card-img-bottom" style={{ width: "100%", height: "auto" }} alt="Flashcard" />
+            <form className="mt-4" onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "0 auto" }}>
+              <input type="hidden" name="sessionId" value={sessionId} />
+              <input type="hidden" name="word" value={flashcardInfo.word} />
+              <input type="hidden" name="translation" value={flashcardInfo.translation} />
+              <input type="hidden" name="pronunciation" value={flashcardInfo.pronunciation} />
+              <input type="hidden" name="definition" value={flashcardInfo.definition} />
+              <input type="hidden" name="image" value={flashcardInfo.image} />
+              <p>Do you want to collect this flashcard?</p>
+              <div className="btn-group btn-group-toggle d-flex justify-content-center" role="group" aria-label="Save Flashcard">
+                <label
+                  className={`btn btn-outline-success ${flashcardInfo.saved === true ? 'active' : ''}`}
+                  onClick={handleSaveFlashcard}
+                >
+                  Collect
+                </label>
+
+                <label
+                  className={`btn btn-outline-warning ${flashcardInfo.saved === false ? 'active' : ''}`}
+                  onClick={handleUnsaveFlashcard}
+                >
+                  No Thanks
+                </label>
+              </div>
+              <div className="d-flex justify-content-center mt-3">
+                <button type="submit" className="btn btn-dark">Next Flashcard</button>
+              </div>
+            </form>
           </div>
+
         ) : (
           <div className="card-header">
             Loading...
@@ -242,33 +288,6 @@ const Flashcard = (props) => {
       </div>
 
 
-      <form className="mt-4" onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "0 auto" }}>
-        <input type="hidden" name="sessionId" value={sessionId} />
-        <input type="hidden" name="word" value={flashcardInfo.word} />
-        <input type="hidden" name="translation" value={flashcardInfo.translation} />
-        <input type="hidden" name="pronunciation" value={flashcardInfo.pronunciation} />
-        <input type="hidden" name="definition" value={flashcardInfo.definition} />
-        <input type="hidden" name="image" value={flashcardInfo.image} />
-        <p>Do you want to collect this flashcard?</p>
-        <div className="btn-group btn-group-toggle d-flex justify-content-center" role="group" aria-label="Save Flashcard">
-          <label
-            className={`btn btn-outline-success ${flashcardInfo.saved === true ? 'active' : ''}`}
-            onClick={handleSaveFlashcard}
-          >
-            Collect
-          </label>
-
-          <label
-            className={`btn btn-outline-warning ${flashcardInfo.saved === false ? 'active' : ''}`}
-            onClick={handleUnsaveFlashcard}
-          >
-            No Thanks
-          </label>
-        </div>
-        <div className="d-flex justify-content-center mt-3">
-          <button type="submit" className="btn btn-dark">Next Flashcard</button>
-        </div>
-      </form>
     </div>
   );
 };
