@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import '../css/FlashCard.css';
+
 
 function CheckSavedFlashCard(props) {
     const { sessionId } = props;
@@ -24,26 +26,32 @@ function CheckSavedFlashCard(props) {
 
     // Return JSX outside of useEffect
     return (
-        <div className="card text-center" style={{ maxWidth: "400px", margin: "0 auto" }}>
-            <div className="card-header">
-                {flashcardInfo.language} Flashcard {/* Use flashcardInfo.language */}
-            </div>
-            <div className="card-body d-flex align-items-center justify-content-evenly">
-                <h1 className="card-title mb-0">Word:</h1>
-                <h2 className="card-title mb-0">{flashcardInfo.word}</h2>
-            </div>
+        <div className="wrapper">
+            <div className="flip-card">
+                <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                        <div className="word-section">
+                            <div className="word">
+                                <p>{flashcardInfo.word}</p>
+                            </div>
+                        </div>
+                        <div className="details">
+                            <p><strong>Pronunciation:</strong> {flashcardInfo.pronunciation}</p>
+                            <br />
+                            <p><strong>Translation:</strong> {flashcardInfo.translation}</p>
+                            <br />
+                            <p><strong>Definition:</strong> {flashcardInfo.definition}</p>
+                        </div>
+                    </div>
 
-            <div className="card-text">
-                <p>Pronunciation: {flashcardInfo.pronunciation}</p>
-                <p>Translation: {flashcardInfo.translation}</p>
-                <p>Definition: {flashcardInfo.definition}</p>
+                    <div className="flip-card-back">
+                        <img src={flashcardInfo.image} className="squareImage" alt="Square Unsplash Image" />
+                    </div>
+                </div>
             </div>
-
-            <img src={flashcardInfo.image} className="card-img-bottom" style={{ width: "100%", height: "auto" }} alt="Flashcard Image" />
             <div className="card-footer text-muted">
                 <Link to={`/savedflashcards/${languageId}`} className="btn btn-primary">Back to Saved Flashcards</Link>
             </div>
-
         </div>
     );
 }

@@ -1,0 +1,142 @@
+.flip-card {
+  background-color: transparent;
+  width: 400px;
+  height: 400px;
+  perspective: 1000px;
+  margin-bottom: 20px; /* Adjust as needed */
+  margin-top: 20px;
+  position: relative;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 25px;
+}
+
+@keyframes color {
+  0% {
+    background: #33cccc;
+  }
+  20% {
+    background: #33cc36;
+  }
+  40% {
+    background: #b8cc33;
+  }
+  60% {
+    background: #fcca00;
+  }
+  80% {
+    background: #33cc36;
+  }
+  100% {
+    background: #33cccc;
+  }
+}
+
+.flip-card-front {
+  background-color: #f3f1f1;
+  color: black;
+  padding: 20px;
+  background: linear-gradient(
+    90deg,
+    #33cccc,
+    #33cc36,
+    #b8cc33,
+    #fcca00,
+    #33cc36,
+    #33cccc
+  );
+  animation: color 6s infinite linear;
+}
+
+.details {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.flip-card-back {
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.squareImage {
+  width: 400px; /* Adjust this size as needed */
+  height: 400px; /* Keeping the width and height the same to display a square */
+  object-fit: cover; /* This property can help in maintaining the image's aspect ratio */
+  border-radius: 25px;
+}
+
+.info {
+  font-size: 0.85em;
+}
+
+.word-section {
+  text-align: center;
+}
+
+.word {
+  display: inline-block;
+  /* background-color: #ffffff; */
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 3em;
+}
+
+.hr {
+  margin-top: -20px;
+}
+
+
+
+.details p {
+  margin: 5px;
+}
+
+.like-button {
+  position: absolute;
+  top: 12px;
+  right: 23px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.3s; /* Adding transition for color change */
+  z-index: 1;
+}
+
+.like-button:hover {
+  color: red; /* Change color to red on hover */
+}
+
+.like-button.clicked {
+  color: red; /* Change color to red when 'clicked' class is applied */
+}

@@ -12,6 +12,8 @@ import Flashcard from './components/Flashcard';
 import { Route, Routes } from 'react-router-dom';
 import EditProfile from './components/EditProfile';
 import CheckSavedFlashCard from './components/CheckSavedFlashCard';
+// import background from './images/background.JPG';
+
 
 function App() {
 

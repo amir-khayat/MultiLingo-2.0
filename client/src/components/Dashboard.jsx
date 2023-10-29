@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import '../css/Dashboard.css';
+
 
 const Dashboard = (props) => {
   const { sessionId, setSessionId } = props;
@@ -84,7 +86,7 @@ const Dashboard = (props) => {
 
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" >
       <h1>Hello, {userData.first_name}</h1>
 
       <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
