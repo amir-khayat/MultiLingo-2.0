@@ -13,7 +13,8 @@ def flashcards():
 def flashcard(flashcard_id):
     data = {'id': flashcard_id}
     flashcard = Flashcard.get_flashcard_by_id(data)
-    return jsonify(flashcard), 200
+    print("fffFLASHCARD", flashcard)
+    return jsonify(flashcard.to_json()), 200
 
 @app.route('/flashcards/word/<string:word>', methods=['GET'])
 def flashcard_by_word(word):
@@ -72,6 +73,17 @@ def language_word_by_user(user_id, language_id):
     flashcards_word = Flashcard.get_all_words(data)
     print("FLASHCARDS WORD", flashcards_word)
     return jsonify(flashcards_word), 200
+
+
+@app.route('/savedflashcards/user/<int:user_id>/language/<int:language_id>', methods=['GET'])
+def saved_flashcards_by_user_and_language(user_id, language_id):
+    data = {
+        'user_id': user_id,
+        'language_id': language_id
+    }
+    print("DATA", data)
+    flashcards = Flashcard.get_saved_flashcard_by_user_id(data)
+    return jsonify([flashcard.to_json() for flashcard in flashcards]), 200
 
 
 # @app.route('/api/narakeet/<path:path>', methods=['GET', 'POST'])

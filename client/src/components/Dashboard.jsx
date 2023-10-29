@@ -101,6 +101,10 @@ const Dashboard = (props) => {
             <Link to={`/flashcard/${language.id}`}>
               {language.language} | {language.intensity}
             </Link>
+            <Link to={`/savedflashcards/${language.id}`}>
+              <button className="btn btn-primary ms-2">Saved Flashcards</button>
+            </Link>
+            
             <button className="btn btn-danger ms-2" onClick={() => handleDelete(language.id)}>Delete</button>
           </li>
         ))}

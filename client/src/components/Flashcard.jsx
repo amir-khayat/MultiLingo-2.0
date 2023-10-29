@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { OPENAI_API_KEY } from '../ApiKey.js';
+import '../css/FlashCard.css';
 
 const Flashcard = (props) => {
   const { sessionId } = props;
@@ -13,6 +14,8 @@ const Flashcard = (props) => {
   const [apiloaded, setApiLoaded] = useState(false);
   const [englishWord, setEnglishWord] = useState('');
   const [wordsfromdb, setWordsfromdb] = useState([]);
+  const [imageReady, setImageReady] = useState(false);
+  const [infoReady, setInfoReady] = useState(false);
 
 
   useEffect(() => {
@@ -56,17 +59,16 @@ const Flashcard = (props) => {
   const handleNextWord = () => {
     setApiLoaded(false);
 
-    const prompt = `Generate a WORD with ${languages.intensity} intensity level in the ${languages.language} language. Provide its TRANSLATION in ${userData.user_language}, DEFINITION in ${userData.user_language}, and provide a plain text PRONUNCIATION of the given ${languages.language} WORD, written in ${userData.user_language} text. Make sure the word is NOT one of the following {${wordsfromdb}}. Give me the answer in JSON format with its keys and values in the following format:
+    const prompt = `Generate a ${languages.language} word with ${languages.intensity} intensity level. Please provide its TRANSLATION in ${userData.user_language}, DEFINITION in ${userData.user_language}, and a plain text PRONUNCIATION of the given ${languages.language} word, written in ${userData.user_language} text. Please review the following list of words carefully and avoid using any of them: [${wordsfromdb}], ensure that the generated word has a unique and distinct meaning from any word on that list. Provide the answer in JSON format with keys and values in the following format:
       {
         "word": "",
         "translation": "", // in ${userData.user_language} text
         "definition": "", // in ${userData.user_language} text
         "image": "", // leave this blank
         "audio": "", // leave this blank
-        "pronunciation": "" // pronounce the ${languages.language} word in ${userData.user_language} text using a simplified format (e.g. "ah-oh-ee" for "aoi")
+        "pronunciation": "" // pronounce the given word in ${userData.user_language} text using a simplified format (so if the user language is arabic and the word is in english it would be like this (eg. Word:Voyage Pronunciation: فو-يَيْج)
         translated_word_in_english: ""
-      }
-      `;
+      }`;
 
     console.log("prompt", prompt);
 
@@ -91,6 +93,10 @@ const Flashcard = (props) => {
       .then(data => {
         console.log(data);
         const messageContent = JSON.parse(data.choices[0].message.content);
+        
+        setEnglishWord(messageContent.translated_word_in_english);
+        handleImage(messageContent.translated_word_in_english);
+        
         console.log(messageContent);
         const newFlashcardInfo = {
           ...flashcardInfo,
@@ -103,15 +109,14 @@ const Flashcard = (props) => {
           user_id: sessionId,
           language_id: languageId
         };
-
-        const newEnglishWord = messageContent.translated_word_in_english;
-
+        
+        // const newEnglishWord = messageContent.translated_word_in_english;
+        
         setFlashcardInfo(newFlashcardInfo);
         setWordsfromdb(prevWords => prevWords.concat(newFlashcardInfo.word));
-        setEnglishWord(newEnglishWord);
-        handleImage(newEnglishWord);
         setApiLoaded(true);
         // handleAudio();
+        setInfoReady(true);
       })
       .catch(error => {
         console.log("aierror", error);
@@ -122,7 +127,7 @@ const Flashcard = (props) => {
     const unsplashApiKey = "FhTpHf61Ihdv4CagqxYjJVAjod7Heqi3_9Otgzi5nNM"; // Replace with your actual Unsplash API key
     console.log("prompt", prompt);
     const imageSize = 300;
-    fetch(`https://api.unsplash.com/search/photos?query= ${prompt}&w=${imageSize}&h=${imageSize} `, {
+    fetch(`https://api.unsplash.com/search/photos?query=${prompt}&w=${imageSize}&h=${imageSize} `, {
       headers: {
         "Accept-Version": "v1",
         "Authorization": `Client-ID ${unsplashApiKey}`
@@ -136,44 +141,21 @@ const Flashcard = (props) => {
           image: data.results[0]?.urls?.full || ''
         }));
         console.log("image", flashcardInfo.image);
+        setImageReady(true);
       })
       .catch(error => {
         console.log("unsplashImageError", error);
       });
   };
 
-  // const handleAudio = () => {
-  //   const apiKey = "J9pirXwN8FatHGKoJ73XS5RffB1gMieu5CR7xJ58";
 
-  //   fetch("https://127.0.0.1:5000/api/narakeet/text-to-speech/mp3", {  // Use the appropriate endpoint for your use case
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "x-api-key": apiKey  // Use the correct header for API key
-  //     },
-  //     body: JSON.stringify({
-  //       text: flashcardInfo.word,
-  //       lang: languages.language
-  //     })
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log("Audio Data", data);
 
-  //     })
-  //     .catch(error => {
-  //       console.error("Audio Error:", error);
-  //     });
-  // };
-  
-  
   useEffect(() => {
     // Generate flashcard information using GPT-3 API
     if (loaded && Object.keys(languages).length > 0 && Object.keys(userData).length > 0) {
       handleNextWord();
     }
   }, [loaded]);
-
 
 
   const handleSubmit = (e) => {
@@ -199,6 +181,7 @@ const Flashcard = (props) => {
         console.log(err);
       });
   };
+
   const handleSaveFlashcard = (e) => {
     e.preventDefault();
     setFlashcardInfo((prevData) => ({
@@ -217,11 +200,35 @@ const Flashcard = (props) => {
     console.log("unsaved", flashcardInfo);
   }
 
+  // const handleAudio = () => {
+  //   const apiKey = "J9pirXwN8FatHGKoJ73XS5RffB1gMieu5CR7xJ58";
+
+  //   fetch("https://127.0.0.1:5000/api/narakeet/text-to-speech/mp3", {  // Use the appropriate endpoint for your use case
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "x-api-key": apiKey  // Use the correct header for API key
+  //     },
+  //     body: JSON.stringify({
+  //       text: flashcardInfo.word,
+  //       lang: languages.language
+  //     })
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log("Audio Data", data);
+
+  //     })
+  //     .catch(error => {
+  //       console.error("Audio Error:", error);
+  //     });
+  // };
+
   return (
     <div className="container mt-3">
       <Link to={`/dashboard/${sessionId}`} className="btn btn-primary mb-3"> Back to Dashboard </Link>
       <div className="card text-center" style={{ maxWidth: "400px", margin: "0 auto" }}>
-        {apiloaded ? (
+        {apiloaded && imageReady && infoReady ? (
           <div>
             <div className="card-header">
               {languages.language} Flashcard
@@ -229,20 +236,6 @@ const Flashcard = (props) => {
             <div className="card-body d-flex align-items-center justify-content-evenly">
               <h1 className="card-title mb-0">Word:</h1>
               <h1 className="card-title mb-0">{flashcardInfo.word}</h1>
-              {/* <button
-            className="btn rounded-circle p-0"
-            style={{
-              width: "40px",
-              height: "40px",
-              lineHeight: 0,
-              fontSize: "24px",
-            }}
-            onClick={handleAudio}
-          >
-            <span role="img" aria-label="Play">
-              🗣️
-            </span>
-          </button> */}
             </div>
 
             <div className="card-text">
@@ -250,7 +243,9 @@ const Flashcard = (props) => {
               <p>Translation: {flashcardInfo.translation}</p>
               <p>Definition: {flashcardInfo.definition}</p>
             </div>
-            <img src={flashcardInfo.image} className="card-img-bottom" style={{ width: "100%", height: "auto" }} alt="Flashcard" />
+
+            <img src={flashcardInfo.image} className="card-img-bottom" style={{ width: "100%", height: "auto" }} alt="Flashcard Image" />
+
             <form className="mt-4" onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "0 auto" }}>
               <input type="hidden" name="sessionId" value={sessionId} />
               <input type="hidden" name="word" value={flashcardInfo.word} />
@@ -282,7 +277,12 @@ const Flashcard = (props) => {
 
         ) : (
           <div className="card-header">
-            Loading...
+            <h4>Loading...</h4>
+            <form className="mt-4" onSubmit={handleNextWord} style={{ maxWidth: "400px", margin: "0 auto" }}>
+              <div className="d-flex justify-content-center mt-3">
+                <button type="submit" className="btn btn-dark">Meowments of Impatience</button>
+              </div>
+            </form>
           </div>
         )}
       </div>
@@ -294,3 +294,17 @@ const Flashcard = (props) => {
 
 export default Flashcard;
 
+{/* <button
+            className="btn rounded-circle p-0"
+            style={{
+              width: "40px",
+              height: "40px",
+              lineHeight: 0,
+              fontSize: "24px",
+            }}
+            onClick={handleAudio}
+          >
+            <span role="img" aria-label="Play">
+              🗣️
+            </span>
+          </button> */}

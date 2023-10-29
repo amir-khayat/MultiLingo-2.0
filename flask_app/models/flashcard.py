@@ -39,6 +39,7 @@ class Flashcard(BaseModel):
     def get_flashcard_by_id(cls, data):
         query = "SELECT * FROM flashcards WHERE id = %(id)s;"
         results = connectToMySQL('MultiLingo').query_db(query, data)
+        print("RESULTS", results)
         return cls(results[0])
     
     @classmethod
@@ -47,18 +48,32 @@ class Flashcard(BaseModel):
         results = connectToMySQL('MultiLingo').query_db(query, data)
         return cls(results[0])
     
+
+
+
+
+
+
     @classmethod
     def get_saved_flashcard_by_user_id(cls, data):
         query = """ 
                 SELECT * FROM flashcards
-                WHERE flashcards.user_id = %(id)s AND flashcards.saved = 1;
+                WHERE flashcards.user_id = %(user_id)s AND flashcards.saved = 1 AND flashcards.language_id = %(language_id)s;
             """
         results = connectToMySQL('MultiLingo').query_db(query, data)
-        flashcards = []
+
+        savedFlashcards = []
         for flashcard in results:
-            flashcards.append(cls(flashcard))
-        return flashcards
+            savedFlashcards.append(cls(flashcard))
+        print("SAVED FLASHCARDS", savedFlashcards)
+        return savedFlashcards
     
+
+
+
+
+
+
     @classmethod
 
     def get_language_flashcard_by_user_id(cls, data):
