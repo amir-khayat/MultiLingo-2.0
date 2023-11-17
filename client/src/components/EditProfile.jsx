@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import LogoutIcon from '../images/Logout-Icon.png';
+import DashboardIcon from '../images/Dashboard-Icon.png';
+import '../css/Profile.css';
+
 
 const EditProfile = (props) => {
-    const { sessionId } = props;
+    const { sessionId, setSessionId } = props;
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -32,6 +37,28 @@ const EditProfile = (props) => {
             ...prevData,
             [name]: value,
         }));
+    };
+
+    const handleLogout = () => {
+        // Delete the session from the server
+        fetch(`http://127.0.0.1:5000/logout_session`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                session_id: sessionId
+            })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setSessionId('');
+                navigate('/');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const handleSubmit = (e) => {
@@ -71,9 +98,38 @@ const EditProfile = (props) => {
         "Korean", "Turkish", "Italian", "Dutch", "Spanish"
     ];
 
+    const editProfile = [
+        'Edit Profile', // English (already present in the original list)
+        'Profil bearbeiten', // German
+        'Modifica profilo', // Italian
+        'Editar perfil', // Spanish
+        'Редактировать профиль', // Russian
+        'プロフィールを編集', // Japanese
+        'Edit Profile', // English (already present in the original list)
+        '编辑个人资料', // Chinese
+        'Modifier le profil', // French
+        'تعديل الملف الشخصي', // Arabic
+        'Rediger profil', // Norwegian
+        '프로필 편집', // Korean
+    ];
+
+
+
+    const [editProfileIndex, setEditProfileIndex] = useState(0);
+
+    const handleEditProfileHover = () => {
+        setEditProfileIndex((editProfileIndex + 1) % editProfile.length);
+    };
+
     return (
-        <div className="container mt-5">
-            <h1>Edit Profile</h1>
+        <div>
+            <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
+                <h2 onMouseEnter={handleEditProfileHover} className="profile-transition">{editProfile[editProfileIndex]}</h2>
+                <div className="d-flex gap-3">
+                    <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Dashboard</Link>
+                    <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
+                </div>
+            </div>
             <form onSubmit={handleSubmit} className="rounded border p-4">
                 {Object.keys(errors).length > 0 && (
                     <div className="alert alert-danger">

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { OPENAI_API_KEY } from '../ApiKey.js';
 import '../css/FlashCard.css';
-import background from '../images/background.JPG';
 import imageComingSoon from '../images/image-coming-soon-placeholder.png';
 
 
 const Flashcard = (props) => {
+
   const { sessionId } = props;
   const { languageId } = useParams();
 
@@ -15,13 +15,10 @@ const Flashcard = (props) => {
   const [userData, setUserData] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [apiloaded, setApiLoaded] = useState(false);
-  const [englishWord, setEnglishWord] = useState('');
   const [wordsfromdb, setWordsfromdb] = useState([]);
   const [imageReady, setImageReady] = useState(false);
   const [infoReady, setInfoReady] = useState(false);
   const [liked, setLiked] = useState(false);
-
-
 
   useEffect(() => {
     fetch(`http://127.0.0.1:5000/languages/${languageId}`)
@@ -57,8 +54,6 @@ const Flashcard = (props) => {
         console.log(error);
       });
   }, [sessionId, languageId]);
-
-
 
 
   const handleNextWord = () => {
@@ -99,7 +94,6 @@ const Flashcard = (props) => {
         console.log(data);
         const messageContent = JSON.parse(data.choices[0].message.content);
 
-        setEnglishWord(messageContent.translated_word_in_english);
         handleImage(messageContent.translated_word_in_english);
 
         console.log(messageContent);
@@ -115,12 +109,10 @@ const Flashcard = (props) => {
           language_id: languageId
         };
 
-        // const newEnglishWord = messageContent.translated_word_in_english;
-
         setFlashcardInfo(newFlashcardInfo);
         setWordsfromdb(prevWords => prevWords.concat(newFlashcardInfo.word));
         setApiLoaded(true);
-        // setInfoReady(true);
+        setInfoReady(true);
       })
       .catch(error => {
         console.log("aierror", error);
@@ -145,23 +137,14 @@ const Flashcard = (props) => {
           image: data.results[0]?.urls?.full || ''
         }));
         console.log("image", flashcardInfo.image);
-        setImageReady(true);
-
+        if (data.results[0]?.urls?.full) {
+          setImageReady(true);
+        }
       })
       .catch(error => {
         console.log("unsplashImageError", error);
       });
   };
-
-  // useEffect(() => {
-  //   // Perform API calls and fetch data
-  //   const delay = setTimeout(() => {
-  //     setInfoReady(true); // Assuming you're setting this state to render the content
-  //   }, 1000); // Adjust the delay time (in milliseconds) as needed
-
-  //   return () => clearTimeout(delay);
-  // }, []); 
-
 
 
   useEffect(() => {
@@ -249,19 +232,31 @@ const Flashcard = (props) => {
         <h2>{languages.language} Flashcard</h2>
       </div>
       <div className="text-center" style={{ maxWidth: "400px", margin: "0 auto" }}>
-        {apiloaded && imageReady && infoReady ? (
+        {apiloaded && infoReady ? (
           <div className="wrapper">
             <div className="flip-card">
-              <div
-                className={`like-button ${liked || flashcardInfo.saved ? 'clicked' : ''}`}
-                onClick={flashcardInfo.saved ? handleUnsaveFlashcard : handleSaveFlashcard}
-              >
-                &#x2665; {/* Unicode for heart symbol */}
-              </div>
-
-
               <div className="flip-card-inner">
-                <div className="flip-card-front" style={{ backgroundImage: `url(${background})` }}>
+                <div className="flip-card-front">
+                  <div
+                    className={`like-button ${liked || flashcardInfo.saved ? 'clicked' : ''}`}
+                    onClick={flashcardInfo.saved ? handleUnsaveFlashcard : handleSaveFlashcard}
+                  >
+                    &#x2665; {/* Unicode for heart symbol */}
+                  </div>
+                  {imageReady ? (
+                    <img src={flashcardInfo.image} className="squareImage" alt={flashcardInfo.translation} />
+                  ) : (
+                    <img src={imageComingSoon} className="squareImage" alt={flashcardInfo.translation} />
+                  )}
+                </div>
+
+                <div className="flip-card-back">
+                  <div
+                    className={`like-button ${liked || flashcardInfo.saved ? 'clicked' : ''}`}
+                    onClick={flashcardInfo.saved ? handleUnsaveFlashcard : handleSaveFlashcard}
+                  >
+                    &#x2665; {/* Unicode for heart symbol */}
+                  </div>
                   <div className="word-section">
                     <div className="word">
                       <p>{flashcardInfo.word}</p>
@@ -275,15 +270,6 @@ const Flashcard = (props) => {
                     <hr />
                     <p><strong>Definition:</strong> {flashcardInfo.definition}</p>
                   </div>
-                </div>
-
-                <div className="flip-card-back">
-                  {flashcardInfo.image ? (
-                    <img src={flashcardInfo.image} className="squareImage" alt={flashcardInfo.translation} />
-                  ) : (
-                    // Alternative content if flashcardInfo.image is empty or null
-                    <img src={imageComingSoon} className="squareImage" alt={flashcardInfo.translation} />
-                  )}                
                 </div>
               </div>
             </div>

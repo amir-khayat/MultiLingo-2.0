@@ -4,8 +4,7 @@
   height: 400px;
   perspective: 1000px;
   margin-bottom: 20px; /* Adjust as needed */
-  margin-top: 20px;
-  position: relative;
+  margin-top: 20px;  position: relative;
 }
 
 .flip-card-inner {
@@ -54,7 +53,7 @@
   }
 }
 
-.flip-card-front {
+.flip-card-back {
   background-color: #f3f1f1;
   color: black;
   padding: 20px;
@@ -70,16 +69,16 @@
   animation: color 6s infinite linear;
 }
 
+.flip-card-back {
+  color: rgb(0, 0, 0);
+  transform: rotateY(180deg);
+}
+
 .details {
   background-color: #ffffff;
   padding: 10px;
   border-radius: 5px;
   text-align: left;
-}
-
-.flip-card-back {
-  color: white;
-  transform: rotateY(180deg);
 }
 
 .wrapper {
@@ -115,8 +114,6 @@
 .hr {
   margin-top: -20px;
 }
-
-
 
 .details p {
   margin: 5px;

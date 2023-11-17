@@ -12,6 +12,7 @@ import Flashcard from './components/Flashcard';
 import { Route, Routes } from 'react-router-dom';
 import EditProfile from './components/EditProfile';
 import CheckSavedFlashCard from './components/CheckSavedFlashCard';
+import NavBar from './components/NavBar';
 // import background from './images/background.JPG';
 
 
@@ -26,19 +27,21 @@ function App() {
 
   return (
     <div className="App">
+      <NavBar sessionId={sessionId} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/dashboard/:id' element={<Dashboard sessionId={sessionId} setSessionId={setSessionId} />} />
-        <Route path="/profile/:id" element={<Profile sessionId={sessionId} />} />
+        <Route path="/profile/:id" element={<Profile sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/addlanguage/:id" element={<AddLanguage sessionId={sessionId} />} />
         <Route path="/flashcard/:languageId" element={<Flashcard sessionId={sessionId} />} />
         <Route path="/savedflashcards/:languageId" element={<SavedFlashCards sessionId={sessionId} />} />
-        <Route path="/editprofile/:id" element={<EditProfile sessionId={sessionId} />} />
+        <Route path="/editprofile/:id" element={<EditProfile sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/register" element={<Registration setSessionId={setSessionId} />} />
         <Route path="/login" element={<Login setSessionId={setSessionId} />} />
         <Route path="/checksavedflashcard/:wordId/:languageId" element={<CheckSavedFlashCard setSessionId={sessionId} />} />
+        <Route path="/navbar" element={<NavBar sessionId={sessionId} />} />
       </Routes>
-      
+
     </div>
   );
 }

@@ -1,0 +1,256 @@
+.background-dashboard {
+  background: linear-gradient(
+    to bottom,
+    rgb(228, 248, 225),
+    rgb(255, 255, 255)
+  );
+}
+
+.logout_icon,
+.add_icon,
+.profile_icon,
+.favorite_icon {
+  height: 17px;
+  margin-right: 5px;
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add {
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s, transform 0.3s; /* Text color and zoom transition */
+}
+
+.add .add-icon-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.3s; /* Zoom transition for icon container */
+}
+
+.add .black-add,
+.add .green-add {
+  transition: opacity 0.3s; /* Transition effect for icon opacity */
+  opacity: 1;
+}
+
+.add .green-add {
+  display: none;
+  opacity: 0;
+}
+
+.add:hover .add-icon-container {
+  transform: scale(1.1); /* Zoom effect on hover */
+}
+
+.add:hover .black-add {
+  display: none;
+}
+
+.add:hover .green-add {
+  display: block;
+  opacity: 1;
+}
+
+.add:hover {
+  color: #1a9d06; /* Change text color on hover */
+}
+
+/* CSS file - Dashboard.css */
+
+/* Profile button */
+.btn.profile {
+  border: 1px solid black;
+  background-color: transparent;
+  color: black;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn.profile:hover {
+  background-color: rgb(160, 206, 153);
+  color: black;
+}
+
+.favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn.favorite {
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.btn.favorite {
+  background: linear-gradient(to right, rgb(0, 0, 0), rgb(0, 0, 0)),
+    linear-gradient(
+      to right,
+      rgb(235, 133, 113),
+      rgb(255, 43, 5),
+      rgb(200, 0, 0)
+    );
+  background-size: 100% 4px, 0 4px;
+  background-position: 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 400ms;
+}
+
+.btn.favorite:hover {
+  background-size: 0 4px, 100% 4px;
+}
+
+/* Logout button */
+.btn.logout {
+  border: 1px solid black;
+  background-color: transparent;
+  color: black;
+  transition: background-color 0.3s;
+}
+
+.btn.logout:hover {
+  background-color: rgb(236, 26, 68);
+  color: black;
+}
+
+/* Existing styles... */
+
+.delete {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+}
+
+.icon-container {
+  position: relative;
+  width: 25px; /* Adjust width as needed */
+  height: 25px; /* Adjust height as needed */
+  overflow: hidden;
+}
+
+.delete_icon {
+  height: 100%;
+  width: auto;
+  display: block;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.red {
+  opacity: 0;
+}
+
+.delete:hover .black {
+  opacity: 0;
+}
+
+.delete:hover .red {
+  opacity: 1;
+}
+
+/* Remaining styles... */
+
+li {
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+}
+
+.language {
+  color: black;
+  text-decoration: none;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+}
+
+.language-list {
+  height: 310px; /* Set your desired height */
+  overflow-y: scroll; /* Add a vertical scrollbar */
+  padding: 0; /* Remove default padding to fit the container */
+  margin: 0; /* Remove default margin */
+  border-top: solid 1px black;
+  border-bottom: solid 1px black;
+  border-left: none;
+  border-right: none;
+  position: relative;
+
+}
+
+.language:hover {
+  transition: color 0.3s ease, transform 0.3s ease;
+  color: #1a9d06; /* Change to the desired color on hover */
+  transform: translateY(-5px); /* Adjust the distance moved up */
+}
+
+.cat-image {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 150px; /* Adjust the width as needed */
+  z-index: 999; /* Adjust the z-index to ensure it appears on top of other content */
+}
+
+
+.cat-add-image {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px; /* Adjust width and height as needed */
+  height: 100px;
+  transition: transform 0.3s; /* Adding transition for a smooth effect */
+}
+
+.cat-add-image:hover {
+  transform: scale(1.2); /* Zoom effect on hover */
+}
+
+.hello-transition {
+  transition: color 0.3s, transform 0.3s;
+}
+
+.hello-transition:hover {
+  color: #1a9d06; /* Change to the desired color on hover */
+  transform: scale(1.1); /* Enlarge the text on hover */
+}
+
+
+.additional-image {
+  position: absolute;
+  bottom: -100px; /* Hide off-screen initially */
+  left: 10%; /* Center horizontally */
+  transform: translateX(-50%);
+  transition: bottom 0.4s; /* Adjust timing to match your requirement */
+}
+
+.additional-image.active {
+  bottom: 0; /* Display the image */
+}
+
+
+
+
+

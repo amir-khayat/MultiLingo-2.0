@@ -72,7 +72,7 @@ const AddLanguage = (props) => {
   };
 
   const languageOptions = [
-    "English", "Mandarin Chinese", "Spanish", "French", "Arabic",
+    "English", "Chinese", "Spanish", "French", "Arabic",
     "Russian", "German", "Japanese", "Portuguese", "Hindi",
     "Korean", "Turkish", "Italian", "Dutch", "Spanish"
   ];
