@@ -2,9 +2,17 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import LogoutIcon from '../images/Logout-Icon.png';
+import DashboardIcon from '../images/Dashboard-Icon.png';
+import AddIconBlack from '../images/Add-Icon.png';
+import AddIconGreen from '../images/Add-Icon-Green.png';
+import ScratchingCat from '../images/Scratching-Cat.png';
+import '../css/Dashboard.css';
+import '../css/Profile.css';
+
 
 const AddLanguage = (props) => {
-  const { sessionId } = props;
+  const { sessionId, setSessionId } = props;
   const [formData, setFormData] = useState({
     language: '',
     intensity: '',
@@ -71,6 +79,28 @@ const AddLanguage = (props) => {
       });
   };
 
+  const handleLogout = () => {
+    // Delete the session from the server
+    fetch(`http://127.0.0.1:5000/logout_session`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        session_id: sessionId
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setSessionId('');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const languageOptions = [
     "English", "Chinese", "Spanish", "French", "Arabic",
     "Russian", "German", "Japanese", "Portuguese", "Hindi",
@@ -82,10 +112,50 @@ const AddLanguage = (props) => {
     languageOptions.splice(index, 1);
   }
 
+  const addLanguage = [
+    'Add Language', // English (already present in the original list)
+    'Sprache hinzufügen', // German
+    'Aggiungi lingua', // Italian
+    'Agregar idioma', // Spanish
+    'Добавить язык', // Russian
+    '言語を追加', // Japanese
+    'Add Language', // English (already present in the original list)
+    '添加语言', // Chinese
+    'Ajouter une langue', // French
+    'إضافة لغة', // Arabic
+    'Legg til språk', // Norwegian
+    '언어 추가', // Korean
+    'Add Language', // English (already present in the original list)
+  ];
+
+
+  const [addLanguageIndex, setAddLanguageIndex] = useState(0);
+
+  const handleAddLanguageHover = () => {
+    setAddLanguageIndex((addLanguageIndex + 1) % addLanguage.length);
+  };
+
   return (
-    <div className="container">
-      <h1 className="mt-4 mb-4">Add Language</h1>
-      <form onSubmit={handleSubmit} className="rounded border p-4">
+    <div>
+      <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
+        <h2 onMouseEnter={handleAddLanguageHover} className="profile-transition">{addLanguage[addLanguageIndex]}</h2>
+        <div className="d-flex gap-3">
+          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Dashboard</Link>
+          <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
+        </div>
+      </div>
+      <form onSubmit={handleSubmit} className="rounded border p-4"
+        style={{
+          fontFamily: 'Arial, sans-serif',
+          border: '1px solid #ccc',
+          padding: '40px',
+          borderRadius: '12px',
+          maxWidth: '600px',
+          margin: '15em auto 0',
+          position: 'relative',
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }}>
         <div className="mb-3">
           <label htmlFor="language" className="form-label">
             Language
@@ -124,11 +194,33 @@ const AddLanguage = (props) => {
           </select>
         </div>
 
-        <button type="submit" className="btn btn-success">
-          Add Language
-        </button>
+        <div className="d-flex justify-content-center mt-4 ">
+          <button className="add" style={{
+            backgroundColor: 'transparent', // Set the background color to transparent
+            border: 'none', // Optionally remove the border too
+          }}>
+            <div className="add-icon-container">
+              <img src={AddIconBlack} alt="" className='add_icon black-add' />
+              <img src={AddIconGreen} alt="" className='add_icon green-add' />
+              Language
+            </div>
+          </button>
+          <img
+            src={ScratchingCat}
+            alt="ScratchingCat"
+            className="scratching-cat"
+            style={{
+              position: 'absolute',
+              bottom: '-140px', // Adjust the distance from the bottom
+              right: '0',
+              width: '120px', // Adjust the width as needed
+              height: 'auto', // Maintain aspect ratio
+            }}
+          />
+
+        </div>
+
       </form>
-      <Link to={`/dashboard/${sessionId}`} className="btn btn-sm btn-danger mt-4">Back to Dashboard</Link>
     </div>
 
 

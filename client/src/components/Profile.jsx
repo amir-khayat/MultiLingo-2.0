@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LogoutIcon from '../images/Logout-Icon.png';
 import DashboardIcon from '../images/Dashboard-Icon.png';
 import CatPeep from '../images/Cat-Peep.png';

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../css/Dashboard.css';
+
 
 const Login = (props) => {
-    const {setSessionId} = props;
+    const { setSessionId } = props;
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -49,9 +51,25 @@ const Login = (props) => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
+        <div>
+            <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
+                <h2>Login</h2>
+                <div className="d-flex gap-3">
+                    <Link className="btn dashboard" to={`/register`}>Register</Link>
+                    <Link className="btn logout" to={`/`}>Home</Link>
+                </div>
+            </div>
+            <form onSubmit={handleSubmit} style={{
+                fontFamily: 'Arial, sans-serif',
+                border: '1px solid #ccc',
+                padding: '40px',
+                borderRadius: '12px',
+                maxWidth: '600px',
+                margin: '15em auto 0',
+                position: 'relative',
+                top: '50%',
+                transform: 'translateY(-50%)',
+            }}>
                 {Object.keys(errors).length > 0 ? (
                     <div className="alert alert-danger">
                         {Object.values(errors).map((error, index) => (
@@ -84,7 +102,6 @@ const Login = (props) => {
                 </div>
                 <button type="submit" className="btn btn-primary">Login</button>
             </form>
-            <Link to="/register">Don't have an account? Register</Link>
         </div>
     );
 };

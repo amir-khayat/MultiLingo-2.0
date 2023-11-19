@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OPENAI_API_KEY } from '../ApiKey.js';
-import '../css/FlashCard.css';
+import LogoutIcon from '../images/Logout-Icon.png';
+import DashboardIcon from '../images/Dashboard-Icon.png';
 import imageComingSoon from '../images/image-coming-soon-placeholder.png';
+import '../css/FlashCard.css';
+import '../css/Dashboard.css';
+
+
 
 
 const Flashcard = (props) => {
 
-  const { sessionId } = props;
+  const { sessionId, setSessionId } = props;
   const { languageId } = useParams();
 
   const [languages, setLanguages] = useState({});
@@ -19,6 +24,8 @@ const Flashcard = (props) => {
   const [imageReady, setImageReady] = useState(false);
   const [infoReady, setInfoReady] = useState(false);
   const [liked, setLiked] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://127.0.0.1:5000/languages/${languageId}`)
@@ -54,6 +61,28 @@ const Flashcard = (props) => {
         console.log(error);
       });
   }, [sessionId, languageId]);
+
+  const handleLogout = () => {
+    // Delete the session from the server
+    fetch(`http://127.0.0.1:5000/logout_session`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        session_id: sessionId
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setSessionId('');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
 
   const handleNextWord = () => {
@@ -201,6 +230,9 @@ const Flashcard = (props) => {
     setLiked(!liked);
   };
 
+
+
+
   // const handleAudio = () => {
   //   const apiKey = "J9pirXwN8FatHGKoJ73XS5RffB1gMieu5CR7xJ58";
 
@@ -226,12 +258,17 @@ const Flashcard = (props) => {
   // };
 
   return (
-    <div className="container mt-3">
-      <Link to={`/dashboard/${sessionId}`} className="btn btn-primary mb-3"> Back to Dashboard </Link>
-      <div>
+    <div>
+      <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
         <h2>{languages.language} Flashcard</h2>
+        <div className="d-flex gap-3">
+          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Dashboard</Link>
+          <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
+        </div>
       </div>
       <div className="text-center" style={{ maxWidth: "400px", margin: "0 auto" }}>
+  
+
         {apiloaded && infoReady ? (
           <div className="wrapper">
             <div className="flip-card">

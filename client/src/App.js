@@ -32,8 +32,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path='/dashboard/:id' element={<Dashboard sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/profile/:id" element={<Profile sessionId={sessionId} setSessionId={setSessionId} />} />
-        <Route path="/addlanguage/:id" element={<AddLanguage sessionId={sessionId} />} />
-        <Route path="/flashcard/:languageId" element={<Flashcard sessionId={sessionId} />} />
+        <Route path="/addlanguage/:id" element={<AddLanguage sessionId={sessionId} setSessionId={setSessionId} />} />
+        <Route path="/flashcard/:languageId" element={<Flashcard sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/savedflashcards/:languageId" element={<SavedFlashCards sessionId={sessionId} />} />
         <Route path="/editprofile/:id" element={<EditProfile sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/register" element={<Registration setSessionId={setSessionId} />} />

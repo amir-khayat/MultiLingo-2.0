@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import LogoutIcon from '../images/Logout-Icon.png';
 import DashboardIcon from '../images/Dashboard-Icon.png';
+import CatCofee from '../images/Cat-Coffee.png';
 import '../css/Profile.css';
 
 
@@ -130,7 +131,33 @@ const EditProfile = (props) => {
                     <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
                 </div>
             </div>
-            <form onSubmit={handleSubmit} className="rounded border p-4">
+            <form
+                onSubmit={handleSubmit}
+                className="rounded border p-4"
+                style={{
+                    fontFamily: 'Arial, sans-serif',
+                    border: '1px solid #ccc',
+                    padding: '40px',
+                    borderRadius: '12px',
+                    maxWidth: '600px',
+                    margin: '15em auto 0',
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                }}
+            >
+                <img
+                    src={CatCofee}
+                    alt="CatCoffee"
+                    className="cat-coffee"
+                    style={{
+                        position: 'absolute',
+                        top: '-90px', // Adjust the distance from the top
+                        right: '20px', // Adjust the distance from the right
+                        width: '170px', // Adjust the width as needed
+                        height: 'auto', // Maintain aspect ratio
+                    }}
+                />
                 {Object.keys(errors).length > 0 && (
                     <div className="alert alert-danger">
                         {Object.values(errors).map((error, index) => (

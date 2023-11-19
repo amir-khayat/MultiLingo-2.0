@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../css/Dashboard.css';
 
 const Registration = (props) => {
     const { setSessionId } = props;
@@ -66,9 +67,25 @@ const Registration = (props) => {
 
 
     return (
-        <div className="container">
-            <h2>Registration</h2>
-            <form onSubmit={handleSubmit}>
+        <div>
+            <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
+                <h2>Register</h2>
+                <div className="d-flex gap-3">
+                    <Link className="btn dashboard" to={`/login`}>Login</Link>
+                    <Link className="btn logout" to={`/`}>Home</Link>
+                </div>
+            </div>
+            <form onSubmit={handleSubmit} style={{
+                fontFamily: 'Arial, sans-serif',
+                border: '1px solid #ccc',
+                padding: '40px',
+                borderRadius: '12px',
+                maxWidth: '600px',
+                margin: '15em auto 0',
+                position: 'relative',
+                top: '50%',
+                transform: 'translateY(-50%)',
+            }}>
                 {Object.keys(errors).length > 0 ? (
                     <div className="alert alert-danger">
                         {Object.values(errors).map((error, index) => (
@@ -77,76 +94,80 @@ const Registration = (props) => {
                     </div>
                 ) : null}
 
-                <div className="mb-3">
-                    <label className="form-label">First Name:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="first_name"
-                        value={formData.first_name}
-                        onChange={handleChange}
-                    />
+                <div className="row mb-3">
+                    <div className="col-md-6">
+                        <label className="form-label">First Name:</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="first_name"
+                            value={formData.first_name}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <label className="form-label">Last Name:</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="last_name"
+                            value={formData.last_name}
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Last Name:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="last_name"
-                        value={formData.last_name}
-                        onChange={handleChange}
-                    />
+                <div className="row mb-3">
+                    <div className="col-md-6">
+                        <label className="form-label">Email:</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <label className="form-label">User Language:</label>
+                        <select
+                            className="form-select"
+                            name="user_language"
+                            value={formData.user_language}
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled></option>
+                            {languageOptions.map((language, index) => (
+                                <option key={index} value={language}>
+                                    {language}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Email:</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">User Language:</label>
-                    <select
-                        className="form-select"
-                        name="user_language"
-                        value={formData.user_language}
-                        onChange={handleChange}
-                    >
-                        <option value="" disabled >Select a language</option>
-                        {languageOptions.map((language, index) => (
-                            <option key={index} value={language}>
-                                {language}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">Password:</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Confirm Password:</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        name="confirm_password"
-                        value={formData.confirm_password}
-                        onChange={handleChange}
-                    />
+                <div className="row mb-3">
+                    <div className="col-md-6">
+                        <label className="form-label">Password:</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <label className="form-label">Confirm Password:</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            name="confirm_password"
+                            value={formData.confirm_password}
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
                 <button type="submit" className="btn btn-primary">Register</button>
             </form>
-            <Link to="/login">Already have an account? Login</Link>
 
         </div>
     );
