@@ -34,11 +34,11 @@ function App() {
         <Route path="/profile/:id" element={<Profile sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/addlanguage/:id" element={<AddLanguage sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/flashcard/:languageId" element={<Flashcard sessionId={sessionId} setSessionId={setSessionId} />} />
-        <Route path="/savedflashcards/:languageId" element={<SavedFlashCards sessionId={sessionId} />} />
+        <Route path="/savedflashcards/:languageId" element={<SavedFlashCards sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/editprofile/:id" element={<EditProfile sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/register" element={<Registration setSessionId={setSessionId} />} />
         <Route path="/login" element={<Login setSessionId={setSessionId} />} />
-        <Route path="/checksavedflashcard/:wordId/:languageId" element={<CheckSavedFlashCard setSessionId={sessionId} />} />
+        <Route path="/checksavedflashcard/:wordId/:languageId" element={<CheckSavedFlashCard sessionId={sessionId} setSessionId={setSessionId} />} />
         <Route path="/navbar" element={<NavBar sessionId={sessionId} />} />
       </Routes>
 

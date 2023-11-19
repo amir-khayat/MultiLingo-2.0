@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import LogoutIcon from '../images/Logout-Icon.png';
-import DashboardIcon from '../images/Dashboard-Icon.png';
+import Back from '../images/Back.png';
 import AddIconBlack from '../images/Add-Icon.png';
 import AddIconGreen from '../images/Add-Icon-Green.png';
 import ScratchingCat from '../images/Scratching-Cat.png';
@@ -104,7 +104,7 @@ const AddLanguage = (props) => {
   const languageOptions = [
     "English", "Chinese", "Spanish", "French", "Arabic",
     "Russian", "German", "Japanese", "Portuguese", "Hindi",
-    "Korean", "Turkish", "Italian", "Dutch", "Spanish"
+    "Korean", "Turkish", "Italian", "Dutch", "Punjabi"
   ];
 
   const index = languageOptions.indexOf(userData.user_language);
@@ -140,7 +140,7 @@ const AddLanguage = (props) => {
       <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
         <h2 onMouseEnter={handleAddLanguageHover} className="profile-transition">{addLanguage[addLanguageIndex]}</h2>
         <div className="d-flex gap-3">
-          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Dashboard</Link>
+          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={Back} alt="" className='dashboard_icon' />Back</Link>
           <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
         </div>
       </div>

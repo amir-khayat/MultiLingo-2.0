@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OPENAI_API_KEY } from '../ApiKey.js';
 import LogoutIcon from '../images/Logout-Icon.png';
-import DashboardIcon from '../images/Dashboard-Icon.png';
+import Back from '../images/Back.png';
 import imageComingSoon from '../images/image-coming-soon-placeholder.png';
+import ReloadCat from '../images/Reload-Cat.png';
 import '../css/FlashCard.css';
 import '../css/Dashboard.css';
 
@@ -199,6 +200,8 @@ const Flashcard = (props) => {
         if (data.success) {
           console.log("Flashcard added successfully");
           handleNextWord();
+          setNextButtonColor('btn-dark'); // Reset button color to default
+
         } else {
           console.log("Error adding flashcard");
         }
@@ -208,12 +211,19 @@ const Flashcard = (props) => {
       });
   };
 
+  const [nextButtonColor, setNextButtonColor] = useState('btn-dark');
+
+  // ... existing code
+
+
+
   const handleSaveFlashcard = (e) => {
     e.preventDefault();
     setFlashcardInfo((prevData) => ({
       ...prevData,
       saved: true,
     }));
+    setNextButtonColor(liked || flashcardInfo.saved ? 'btn-dark' : 'btn-danger');
     console.log("saved", flashcardInfo);
   };
 
@@ -223,15 +233,9 @@ const Flashcard = (props) => {
       ...prevData,
       saved: false,
     }));
+    setNextButtonColor(liked || flashcardInfo.saved ? 'btn-dark' : 'btn-danger');
     console.log("unsaved", flashcardInfo);
-  }
-
-  const handleLike = () => {
-    setLiked(!liked);
   };
-
-
-
 
   // const handleAudio = () => {
   //   const apiKey = "J9pirXwN8FatHGKoJ73XS5RffB1gMieu5CR7xJ58";
@@ -257,17 +261,18 @@ const Flashcard = (props) => {
   //     });
   // };
 
+
+
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
         <h2>{languages.language} Flashcard</h2>
         <div className="d-flex gap-3">
-          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Dashboard</Link>
+          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={Back} alt="" className='dashboard_icon' />Back</Link>
           <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
         </div>
       </div>
       <div className="text-center" style={{ maxWidth: "400px", margin: "0 auto" }}>
-  
 
         {apiloaded && infoReady ? (
           <div className="wrapper">
@@ -319,20 +324,32 @@ const Flashcard = (props) => {
                 <input type="hidden" name="definition" value={flashcardInfo.definition} />
                 <input type="hidden" name="image" value={flashcardInfo.image} />
                 <div className="d-flex justify-content-center mt-3">
-                  <button type="submit" className="btn btn-dark">Next Flashcard</button>
+                  <button type="submit" className={`btn ${nextButtonColor}`}>Next Flashcard</button>
                 </div>
+                {nextButtonColor === 'btn-danger' && (
+                  <p className='toSave mt-2'>**If <span style={{ color: "red" }}>Red</span> press next to save**</p>
+                )}
               </form>
             </div>
           </div>
         ) : (
-          <div className="card-header">
-            <h4>Loading...</h4>
-            <form className="mt-4" onSubmit={handleNextWord} style={{ maxWidth: "400px", margin: "0 auto" }}>
-              <div className="d-flex justify-content-center mt-3">
-                <button type="submit" className="btn btn-dark">Meowments of Impatience</button>
+          <div className="card-header mt-5">
+            <div className="card-header d-flex flex-column align-items-center">
+              <div >
+                <img
+                  src={ReloadCat}
+                  alt="Reload Cat"
+                  className="rotate-image"
+                />
               </div>
-            </form>
+              <form className="d-flex justify-content-center mt-2 " onSubmit={handleNextWord}>
+                <button type="submit" className="btn btn-dark">
+                  Retry if cat stops spinning
+                </button>
+              </form>
+            </div>
           </div>
+
         )}
       </div>
 

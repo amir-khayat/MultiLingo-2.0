@@ -137,3 +137,25 @@
 .like-button.clicked {
   color: red; /* Change color to red when 'clicked' class is applied */
 }
+
+/* Add this style to your CSS file */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg); /* Starting point: no rotation */
+  }
+  to {
+    transform: rotate(360deg); /* Ending point: rotate 360 degrees */
+  }
+}
+
+.rotate-image {
+  width: 150px;
+  height: 150px;
+  animation: rotate 5s linear; /* Apply the rotation animation */
+}
+
+.toSave {
+  font-size: small;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+}

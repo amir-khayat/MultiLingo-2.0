@@ -60,6 +60,7 @@ def update_flashcard(flashcard_id):
 @app.route('/flashcards/<int:flashcard_id>', methods=['DELETE'])
 def delete_flashcard(flashcard_id):
     data = {'id': flashcard_id}
+    print("IDM", data)
     Flashcard.delete_flashcard(data)
     return jsonify({'success': True}), 200
 

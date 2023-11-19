@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import DashboardIcon from '../images/Dashboard-Icon.png';
 import '../css/Dashboard.css';
 
 
@@ -56,7 +57,7 @@ const Login = (props) => {
                 <h2>Login</h2>
                 <div className="d-flex gap-3">
                     <Link className="btn dashboard" to={`/register`}>Register</Link>
-                    <Link className="btn logout" to={`/`}>Home</Link>
+                    <Link className="btn logout" to={`/`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Home</Link>
                 </div>
             </div>
             <form onSubmit={handleSubmit} style={{
@@ -91,7 +92,7 @@ const Login = (props) => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Password:</label>
+                    <label className="form-label">Passwordsss:</label>
                     <input
                         type="password"
                         className="form-control"

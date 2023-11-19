@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LogoutIcon from '../images/Logout-Icon.png';
-import DashboardIcon from '../images/Dashboard-Icon.png';
+import Back from '../images/Back.png';
 import CatPeep from '../images/Cat-Peep.png';
 import '../css/Profile.css';
 
@@ -81,7 +81,7 @@ const Profile = (props) => {
       <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
         <h2 onMouseEnter={handleProfileHover} className="profile-transition">{profile[profileIndex]}</h2>
         <div className="d-flex gap-3">
-          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={DashboardIcon} alt="" className='dashboard_icon' />Dashboard</Link>
+          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={Back} alt="" className='dashboard_icon' />Back</Link>
           <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
         </div>
       </div>
