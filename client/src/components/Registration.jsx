@@ -79,17 +79,17 @@ const Registration = (props) => {
             </div>
             <div className='regClass'>
                 <form onSubmit={handleSubmit} 
-                // style={{
-                //     fontFamily: 'Arial, sans-serif',
-                //     border: '1px solid #ccc',
-                //     padding: '40px',
-                //     borderRadius: '12px',
-                //     maxWidth: '600px',
-                //     margin: '15em auto 0',
-                //     position: 'relative',
-                //     top: '50%',
-                //     transform: 'translateY(-50%)',
-                // }}
+                style={{
+                    fontFamily: 'Arial, sans-serif',
+                    border: '1px solid #ccc',
+                    padding: '40px',
+                    borderRadius: '12px',
+                    maxWidth: '600px',
+                    margin: '15em auto 0',
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                }}
                 >
                     {Object.keys(errors).length > 0 ? (
                         <div className="alert alert-danger">

@@ -1,0 +1,16 @@
+.background-dashboard {
+  background: linear-gradient(
+    to bottom,
+    rgb(228, 248, 225),
+    rgb(255, 255, 255)
+  );
+}
+
+.transition {
+  transition: color 0.3s, transform 0.3s;
+}
+
+.transition:hover {
+  color: #1a9d06; /* Change to the desired color on hover */
+  transform: scale(1.1); /* Enlarge the text on hover */
+}

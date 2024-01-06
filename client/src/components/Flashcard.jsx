@@ -237,6 +237,13 @@ const Flashcard = (props) => {
     console.log("unsaved", flashcardInfo);
   };
 
+  const handleSubmitAndRedirect = (e) => {
+    e.preventDefault();
+    handleSubmit(e); // Handle submit logic
+    navigate(`/dashboard/${sessionId}`); // Redirect to the dashboard
+  };
+
+
   // const handleAudio = () => {
   //   const apiKey = "J9pirXwN8FatHGKoJ73XS5RffB1gMieu5CR7xJ58";
 
@@ -268,7 +275,17 @@ const Flashcard = (props) => {
       <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
         <h2>{languages.language} Flashcard</h2>
         <div className="d-flex gap-3">
-          <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={Back} alt="" className='dashboard_icon' />Back</Link>
+          {nextButtonColor === 'btn-danger' ? (
+            <Link className="btn dashboard" to={`/dashboard/${sessionId}`} onClick={handleSubmitAndRedirect}>
+              <img src={Back} alt="" className='dashboard_icon' />
+              Back
+            </Link>
+          ) : (
+            <Link className="btn dashboard" to={`/dashboard/${sessionId}`}>
+              <img src={Back} alt="" className='dashboard_icon' />
+              Back
+            </Link>
+          )}
           <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
         </div>
       </div>
@@ -326,9 +343,6 @@ const Flashcard = (props) => {
                 <div className="d-flex justify-content-center mt-3">
                   <button type="submit" className={`btn ${nextButtonColor}`}>Next Flashcard</button>
                 </div>
-                {nextButtonColor === 'btn-danger' && (
-                  <p className='toSave mt-2'>**If <span style={{ color: "red" }}>Red</span> press next to save**</p>
-                )}
               </form>
             </div>
           </div>

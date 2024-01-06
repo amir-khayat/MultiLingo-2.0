@@ -1,14 +1,11 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, React } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import LogoutIcon from '../images/Logout-Icon.png';
 import Back from '../images/Back.png';
 import AddIconBlack from '../images/Add-Icon.png';
 import AddIconGreen from '../images/Add-Icon-Green.png';
 import ScratchingCat from '../images/Scratching-Cat.png';
-import '../css/Dashboard.css';
-import '../css/Profile.css';
+import '../css/AddLanguage.css';
 
 
 const AddLanguage = (props) => {
@@ -25,7 +22,6 @@ const AddLanguage = (props) => {
     email: '',
     user_language: '',
   });
-
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -128,7 +124,6 @@ const AddLanguage = (props) => {
     'Add Language', // English (already present in the original list)
   ];
 
-
   const [addLanguageIndex, setAddLanguageIndex] = useState(0);
 
   const handleAddLanguageHover = () => {
@@ -138,7 +133,7 @@ const AddLanguage = (props) => {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center px-5 pt-5 background-dashboard">
-        <h2 onMouseEnter={handleAddLanguageHover} className="profile-transition">{addLanguage[addLanguageIndex]}</h2>
+        <h2 onMouseEnter={handleAddLanguageHover} className="transition">{addLanguage[addLanguageIndex]}</h2>
         <div className="d-flex gap-3">
           <Link className="btn dashboard" to={`/dashboard/${sessionId}`}><img src={Back} alt="" className='dashboard_icon' />Back</Link>
           <button className="btn logout" onClick={handleLogout}><img src={LogoutIcon} alt="" className='logout_icon' /> Logout</button>
